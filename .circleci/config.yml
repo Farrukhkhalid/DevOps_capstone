@@ -40,4 +40,9 @@ jobs:
           name: run lint
           command: |
             . venv/bin/activate
-            hadolint Dockerfile 
+            hadolint Dockerfile
+
+workflows:
+  default:
+    jobs:
+      - build
