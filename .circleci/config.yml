@@ -24,4 +24,4 @@ jobs:
 workflows:
   DEfault:
     jobs:
-      - say-hello
+      - Lint-Docker
