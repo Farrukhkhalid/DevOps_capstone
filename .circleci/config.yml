@@ -69,6 +69,7 @@ jobs:
             --nodes 2 \
             --nodes-min 1 \
             --nodes-max 2
+            kubectl get svc
             
       
 
