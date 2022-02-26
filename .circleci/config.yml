@@ -51,6 +51,13 @@ jobs:
             # check eksctl version
             eksctl version
       - run:
+          name: installing dependencies kubctl
+          command: |
+            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
+            openssl sha1 -sha256 kubectl
+            
+
+      - run:
           name: commissioning aws eks cluster
           command: |
             eksctl create cluster \
@@ -60,7 +67,9 @@ jobs:
             --node-type t3.micro \
             --nodes 2 \
             --nodes-min 1 \
-            --nodes-max 2 
+            --nodes-max 2
+            kubectl get svc
+      
 
 
 
