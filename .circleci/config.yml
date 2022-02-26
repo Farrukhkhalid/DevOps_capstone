@@ -46,7 +46,6 @@ jobs:
       - run:
           name: installing dependencies ( eksctl tool)
           command: |
-            apk add --update tar gzip  curl
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/v0.83.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
             mv /tmp/eksctl /usr/local/bin
             eksctl version
