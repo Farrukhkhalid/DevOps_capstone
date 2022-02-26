@@ -39,7 +39,7 @@ jobs:
 
   Ekscluster-deploy:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7.3-stretch
     working_directory: ~/repo
     steps:
       - checkout
