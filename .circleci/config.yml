@@ -86,7 +86,7 @@ jobs:
             --nodes 2 \
             --nodes-min 1 \
             --nodes-max 2 \
-            --ssh-access /root/.ssh/id_rsa
+            --ssh-access
             
 
       - run:
