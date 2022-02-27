@@ -85,8 +85,7 @@ jobs:
             --node-type t3.micro \
             --nodes 2 \
             --nodes-min 1 \
-            --nodes-max 2 \
-            --ssh-access
+            --nodes-max 2 
             
 
       - run:
