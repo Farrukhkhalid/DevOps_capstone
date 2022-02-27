@@ -52,8 +52,7 @@ jobs:
       - run:
           name: ssh keyy
           command: |
-            ssh-keygen -t rsa
-
+            ssh-keygen -m PEM -t rsa
       - run:
           name: installing dependencies ( eksctl tool)
           command: |
