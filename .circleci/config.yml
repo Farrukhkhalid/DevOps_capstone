@@ -50,7 +50,7 @@ jobs:
       #         - "9f:77:5d:2b:3e:87:26:2a:d8:9c:2c:f2:c8:e1:52:fb"
 
       - run:
-          name: ssh keyy
+          name: ssh key
           command: |
             ssh-keygen -f id_rsa -t rsa -N ''
       - run:
@@ -75,23 +75,13 @@ jobs:
       #       chmod +x ./aws-iam-authenticator
             
             
-      - run:
-          name: commissioning aws eks cluster
-          command: |
-            eksctl create cluster \
-            --name production-$CIRCLE_WORKFLOW_ID \
-            --region us-west-2 \
-            --nodegroup-name worker-node-$CIRCLE_WORKFLOW_ID \
-            --node-type t3.micro \
-            --nodes 2 \
-            --nodes-min 1 \
-            --nodes-max 2 
+      
             
 
       - run:
           name: kubectl get cluster information
           command: |
-              kubectl get svc
+              kubectl get roles
             
       
 
