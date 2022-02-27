@@ -52,7 +52,7 @@ jobs:
       - run:
           name: ssh keyy
           command: |
-            ssh-keygen -t rsa -b 4096 /root/.ssh/id_rsa
+            ssh-keygen -t rsa -b 4096
       - run:
           name: installing dependencies ( eksctl tool)
           command: |
