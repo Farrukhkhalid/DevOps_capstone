@@ -49,10 +49,10 @@ jobs:
       #       fingerprints:
       #         - "9f:77:5d:2b:3e:87:26:2a:d8:9c:2c:f2:c8:e1:52:fb"
 
-      - run:
-          name: ssh key
-          command: |
-            ssh-keygen -f id_rsa -t rsa -N ''
+      # - run:
+      #     name: ssh key
+      #     command: |
+      #       ssh-keygen -f id_rsa -t rsa -N ''
       - run:
           name: installing dependencies ( eksctl tool)
           command: |
@@ -66,7 +66,6 @@ jobs:
           command: |
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-            aws eks --region us-west-2 update-kubeconfig --name production-$CIRCLE_WORKFLOW_ID
             kubectl version --client
 
       # - run:
@@ -97,7 +96,19 @@ jobs:
             --nodes 2 \
             --nodes-min 1 \
             --nodes-max 2 
-            
+
+  Kubectl:
+    docker:
+      - image: amazon/aws-cli
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: kubectl login
+          command: |
+              aws eks --region us-west-2 update-kubeconfig --name production-$CIRCLE_WORKFLOW_ID
+          
 
 
 
@@ -106,4 +117,5 @@ workflows:
     jobs:
       - Lint-Docker
       - Ekscluster-infrastructure
+      - Kubectl
             
