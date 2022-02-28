@@ -61,12 +61,22 @@ jobs:
             # check eksctl version
             eksctl version
 
+      # - run:
+      #     name: installing dependencies kubctl
+      #     command: |
+      #       curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      #       install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      #       kubectl version --client
+
       - run:
           name: installing dependencies kubctl
           command: |
-            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-            install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-            kubectl version --client
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+            sudo cp /etc/kubernetes/admin.conf /home/vagrant/config
+            mkdir .kube
+            mv config .kube/
+            sudo chown $(id -u):$(id -g ) $HOME/.kube/config
+            kubectl version
 
       # - run:
       #     name: aws-iam-authenticator
@@ -75,7 +85,18 @@ jobs:
       #       chmod +x ./aws-iam-authenticator
             
             
-      
+      # - run:
+      #     name:
+      #     command: |
+      #       eksctl create cluster \
+      #       --name production-$CIRCLE_WORKFLOW_ID \
+      #       --region us-west-2 \
+      #       --nodegroup-name worker-node-$CIRCLE_WORKFLOW_ID \
+      #       --node-type t3.micro \
+      #       --nodes 2 \
+      #       --nodes-min 1 \
+      #       --nodes-max 2 \
+      #       --ssh-access
             
 
       - run:
