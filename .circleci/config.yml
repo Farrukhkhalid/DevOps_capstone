@@ -92,15 +92,29 @@ jobs:
             --nodes-max 2 
 
   Kubectl:
-    docker:
-      - image: amazon/aws-cli
+    # docker:
+    #   - image: amazon/aws-cli
     working_directory: ~/repo
     steps:
       - checkout
+
+      - run:
+          name: aws iam auth
+          command: |
+              curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
+              chmod +x ./aws-iam-authenticator
+              mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator && export PATH=$PATH:$HOME/bin
+
       - run:
           name: kubectl login
           command: |
+              curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
+              chmod +x ./kubectl
+              mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
               aws eks --region us-west-2 update-kubeconfig --name production-$CIRCLE_WORKFLOW_ID
+              kubectl version --client
+              export KUBECONFIG=~/.kube/config
+              kubectl get svc
   
   Kube-information:
     docker:
@@ -130,6 +144,6 @@ workflows:
       - Ekscluster-infrastructure
       - Kubectl:
           requires: [Ekscluster-infrastructure]
-      - Kube-information:
-          requires: [Kubectl]
+      # - Kube-information:
+      #     requires: [Kubectl]
             
