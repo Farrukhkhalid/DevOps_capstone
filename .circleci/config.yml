@@ -101,7 +101,6 @@ jobs:
     docker:
       - image: amazon/aws-cli
     working_directory: ~/repo
-
     steps:
       - checkout
       - run:
@@ -113,14 +112,12 @@ jobs:
     docker:
       - image: python:3.7.3-stretch
     working_directory: ~/repo
-
     steps:
       - checkout
       - run:
           name: kubectl login
           command: |
               kubectl get svc
-
 
 
 workflows:
