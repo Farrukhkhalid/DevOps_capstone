@@ -60,14 +60,6 @@ jobs:
             mv /tmp/eksctl /usr/local/bin
             # check eksctl version
             eksctl version
-
-      - run:
-          name: installing dependencies kubctl
-          command: |
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            mv ./kubectl /usr/local/bin/kubectl
-            kubectl version --client
             
 
       # - run:
@@ -116,6 +108,15 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+
+      - run:
+          name: installing dependencies kubctl
+          command: |
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            mv ./kubectl /usr/local/bin/kubectl
+            kubectl version --client
+            
       - run:
           name: kubectl login
           command: |
