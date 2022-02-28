@@ -128,8 +128,8 @@ workflows:
     jobs:
       - Lint-Docker
       - Ekscluster-infrastructure
-      - Kubectl
+      - Kubectl:
           requires: [Ekscluster-infrastructure]
-      - kube-info
+      - kube-info:
           requires: [Kubectl]
             
