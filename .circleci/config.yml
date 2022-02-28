@@ -39,7 +39,7 @@ jobs:
 
   Ekscluster-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7.3-stretch
     working_directory: ~/repo
 
     steps:
@@ -49,10 +49,10 @@ jobs:
       #       fingerprints:
       #         - "9f:77:5d:2b:3e:87:26:2a:d8:9c:2c:f2:c8:e1:52:fb"
 
-      # - run:
-      #     name: ssh key
-      #     command: |
-      #       ssh-keygen -f id_rsa -t rsa -N ''
+      - run:
+          name: ssh key
+          command: |
+            ssh-keygen -f id_rsa -t rsa -N ''
       - run:
           name: installing dependencies ( eksctl tool)
           command: |
