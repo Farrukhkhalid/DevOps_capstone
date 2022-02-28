@@ -72,10 +72,10 @@ jobs:
           name: installing dependencies kubctl
           command: |
             curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
-            sudo cp /etc/kubernetes/admin.conf /home/vagrant/config
+            cp /etc/kubernetes/admin.conf /home/vagrant/config
             mkdir .kube
             mv config .kube/
-            sudo chown $(id -u):$(id -g ) $HOME/.kube/config
+            chown $(id -u):$(id -g ) $HOME/.kube/config
             kubectl version
 
       # - run:
