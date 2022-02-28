@@ -129,9 +129,7 @@ workflows:
       - Lint-Docker
       - Ekscluster-infrastructure
       - Kubectl
-          requires:
-            - Ekscluster-infrastructure
-      -kube-info
-          requires:
-            - Kubectl
+          requires: [Ekscluster-infrastructure]
+      - kube-info
+          requires: [Kubectl]
             
