@@ -119,7 +119,7 @@ jobs:
       - run:
           name: kubectl login
           command: |
-              kubctl get svc
+              kubectl get svc
 
 
 
