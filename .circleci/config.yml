@@ -66,7 +66,6 @@ jobs:
           command: |
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-            kubectl --kubeconfig=~/.kube/config
             aws eks --region us-west-2 update-kubeconfig --name production-$CIRCLE_WORKFLOW_ID
             kubectl version --client
 
