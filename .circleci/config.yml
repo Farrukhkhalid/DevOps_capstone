@@ -116,7 +116,6 @@ jobs:
             chmod +x ./kubectl
             mv ./kubectl /usr/local/bin/kubectl
             kubectl version --client
-
       - run:
           name: kubectl login
           command: |
