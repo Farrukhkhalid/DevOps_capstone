@@ -115,7 +115,7 @@ jobs:
               kubectl version --client
               export KUBECONFIG=~/.kube/config
               kubectl get svc
-              kubectl get nodes
+              kubectl get nodes 
   
   Kube-information:
     docker:
