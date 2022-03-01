@@ -148,7 +148,7 @@ jobs:
             # docker run -d -p 5000:5000 capstone-project-$CIRCLE_WORKFLOW_ID
             dockerpath=farrukhkhalid/capstone-project
             # docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
-            ./docker_login.sh
+            docker login -u "farrukhkhalid" -p "FRkkingot8"
             echo "Docker ID and Image: $dockerpath"
             docker tag capstone-project-$CIRCLE_WORKFLOW_ID farrukhkhalid/capstone-project
             # Push image to a docker repository
