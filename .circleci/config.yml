@@ -25,6 +25,8 @@ jobs:
             # Install hadolint
             wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
             chmod +x /bin/hadolint
+            # Install pylint
+            pip install pylint
       - save_cache:
           paths:
             - ./venv
@@ -32,10 +34,21 @@ jobs:
 
       # run lint!
       - run:
-          name: run lint
+          name: Docker lint
           command: |
             . venv/bin/activate
             hadolint Dockerfile
+
+      - run:
+          name: pylint
+          command: |
+            . venv/bin/activate
+            pylint app.py
+
+
+
+
+# --------------------------------------------------------------
 
   Ekscluster-infrastructure:
     docker:
@@ -86,7 +99,7 @@ jobs:
             --name production-$CIRCLE_WORKFLOW_ID \
             --region us-west-2 \
             --nodegroup-name worker-node-$CIRCLE_WORKFLOW_ID \
-            --node-type t3.micro \
+            --node-type t3.micro \eksctl 
             --nodes 2 \
             --nodes-min 1 \
             --nodes-max 2 
@@ -117,6 +130,23 @@ jobs:
               kubectl get svc
               kubectl get nodes 
   
+
+
+  Docker-image:
+    docker:
+      - image :
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run
+          name: creating docker image
+          command: |
+            
+
+
+
+
+
   Kube-information:
     docker:
       - image: python:3.7.3-stretch
@@ -142,9 +172,9 @@ workflows:
   Default:
     jobs:
       - Lint-Docker
-      - Ekscluster-infrastructure
-      - Kubectl:
-          requires: [Ekscluster-infrastructure]
-      # - Kube-information:
-      #     requires: [Kubectl]
+      # - Ekscluster-infrastructure
+      # - Kubectl:
+      #     requires: [Ekscluster-infrastructure]
+      # # - Kube-information:
+      # #     requires: [Kubectl]
             

@@ -1,20 +1,33 @@
-import Flask
+import random
+from flask import Flask
+from flask import render_template
 
-app = Flask(__name__)
+# generate new background color
+R = random.randint(0, 255)
+G = random.randint(0, 255)
+B = random.randint(0, 255)
 
-@app.route("/")
+#create new background html
+HELLO = """
+    <html style="background-color:rgb({}, {}, {});">
+    <head>
+    <title>Flask Tutorial</title>
+    </head>
+    <body>
+    <h1> Hello World v2!</h1>
+    </body>
+    </html>  
+""".format(R, G, B)
+
+print(HELLO)
+
+INDEX = open('index.html', 'w')
+INDEX.write(HELLO)
+INDEX.close()
+
+APP = Flask(__name__)
+
+@APP.route('/')
 def index():
-    return "Congratulations, it's a web app!"
-
-@app.route("/")
-def fahrenheit_from(celsius):
-    """Convert Celsius to Fahrenheit degrees."""
-    try:
-        fahrenheit = float(celsius) * 9 / 5 + 32
-        fahrenheit = round(fahrenheit, 3)  # Round to three decimal places
-        return str(fahrenheit)
-    except ValueError:
-        return "invalid input"
-
-if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    return render_template('index.html')
+APP.run(host='0.0.0.0', port=80)
