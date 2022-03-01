@@ -132,15 +132,15 @@ jobs:
   
 
 
-  Docker-image:
-    docker:
-      - image :
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run
-          name: creating docker image
-          command: |
+  # Docker-image:
+  #   docker:
+  #     - image :
+  #   working_directory: ~/repo
+  #   steps:
+  #     - checkout
+  #     - run
+  #         name: creating docker image
+  #         command: |
             
 
 
