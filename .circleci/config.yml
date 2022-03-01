@@ -140,7 +140,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 19.03.13
-      - run
+      - run:
           name: creating docker image
           command: |
             docker build --tag = capstone-project-$CIRCLE_WORKFLOW_ID .
