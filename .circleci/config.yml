@@ -84,7 +84,7 @@ jobs:
           command: |
             eksctl create cluster \
             --name production-$CIRCLE_WORKFLOW_ID \
-            --region us-west-2 \
+            --region us-west-1 \
             --nodegroup-name worker-node-$CIRCLE_WORKFLOW_ID \
             --node-type t3.micro \
             --nodes 2 \
