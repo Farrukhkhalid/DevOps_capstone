@@ -43,7 +43,7 @@ jobs:
           name: pylint
           command: |
             . venv/bin/activate
-            pylint app.py
+            pylint app.py --errors-only
 
 
 
