@@ -1,0 +1,1 @@
+docker login -u "farrukhkhalid" -p "FRkkingot8"

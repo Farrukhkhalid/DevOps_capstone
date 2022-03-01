@@ -132,40 +132,51 @@ jobs:
   
 
 
-  # Docker-image:
-  #   docker:
-  #     - image :
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
-  #     - run
-  #         name: creating docker image
-  #         command: |
-            
-
-
-
-
-
-  Kube-information:
+  Docker-image:
     docker:
-      - image: python:3.7.3-stretch
+      - image: circleci/golang:1.15
     working_directory: ~/repo
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run
+          name: creating docker image
+          command: |
+            docker build --tag = capstone-project-$CIRCLE_WORKFLOW_ID .
+            docker image ls
+            docker run -d -p 5000:5000 capstone-project-$CIRCLE_WORKFLOW_ID
+            dockerpath=farrukhkhalid/capstone-project
+            # docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
+            ./docker_login.sh
+            echo "Docker ID and Image: $dockerpath"
+            docker tag capstone-project-$CIRCLE_WORKFLOW_ID farrukhkhalid/capstone-project
+            # Push image to a docker repository
+            docker push farrukhkhalid/capstone-project
 
-      - run:
-          name: installing dependencies kubctl
-          command: |
-            curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            mv ./kubectl /usr/local/bin/kubectl
-            kubectl version --client
-      - run:
-          name: kubectl login
-          command: |
-              export KUBE_CONFIG_PATH=/path/to/.kube/config
-              kubectl get svc
+
+
+
+
+  # Kube-information:
+  #   docker:
+  #     - image: python:3.7.3-stretch
+  #   working_directory: ~/repo
+  #   steps:
+  #     - checkout
+
+  #     - run:
+  #         name: installing dependencies kubctl
+  #         command: |
+  #           curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
+  #           chmod +x ./kubectl
+  #           mv ./kubectl /usr/local/bin/kubectl
+  #           kubectl version --client
+  #     - run:
+  #         name: kubectl login
+  #         command: |
+  #             export KUBE_CONFIG_PATH=/path/to/.kube/config
+  #             kubectl get svc
 
 
 workflows:
@@ -177,4 +188,5 @@ workflows:
       #     requires: [Ekscluster-infrastructure]
       # # - Kube-information:
       # #     requires: [Kubectl]
+      - Docker-image
             
