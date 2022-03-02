@@ -151,8 +151,7 @@ jobs:
             docker push farrukhkhalid/capstone-project
 
   deploy-EKS-cluster:
-    docker:
-      - image: circleci/golang:1.15
+    executor: aws-eks/python3
     working_directory: ~/repo
     steps:
       - checkout
