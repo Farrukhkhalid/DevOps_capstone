@@ -152,7 +152,7 @@ jobs:
 
   deploy-EKS-cluster:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/golang:1.15
     working_directory: ~/repo
     steps:
       - checkout
