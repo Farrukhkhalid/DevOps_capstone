@@ -213,14 +213,11 @@ jobs:
             aws eks --region us-west-2 update-kubeconfig --name production-$CIRCLE_WORKFLOW_ID
             kubectl version --client
             export KUBECONFIG=~/.kube/config
-
-            kubectl get svc
-            kubectl get nodes
-
+            
             kubectl apply -f eks/k8s-deploy.yml
             kubectl apply -f eks/k8s-service.yml
-            kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
-  
+            kubectl get nodes
+            kubectl get pods
   
   # Kube-information:
   #   docker:
