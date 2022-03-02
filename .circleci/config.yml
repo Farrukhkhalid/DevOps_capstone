@@ -85,11 +85,7 @@ jobs:
       #       chown $(id -u):$(id -g ) $HOME/.kube/config
       #       kubectl version
 
-      # - run:
-      #     name: aws-iam-authenticator
-      #     command: |
-      #       curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
-      #       chmod +x ./aws-iam-authenticator
+     
             
             
       - run:
@@ -169,6 +165,8 @@ jobs:
             kubectl apply -f eks/k8s-service.yaml
             get_pods = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
             echo $app_pod
+  
+  
   # Kube-information:
   #   docker:
   #     - image: python:3.7.3-stretch
