@@ -92,10 +92,10 @@ jobs:
           name:
           command: |
             eksctl create cluster \
-            --name production-green \
+            --name production-$CIRCLE_WORKFLOW_ID \
             --region us-west-2 \
-            --nodegroup-name worker-node-green \
-            --node-type t3.micro \eksctl 
+            --nodegroup-name worker-node-$CIRCLE_WORKFLOW_ID \
+            --node-type t3.micro \
             --nodes 2 \
             --nodes-min 1 \
             --nodes-max 2 
@@ -166,7 +166,7 @@ jobs:
             get_pods = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
             echo $app_pod
   
-
+  
   # Kube-information:
   #   docker:
   #     - image: python:3.7.3-stretch
