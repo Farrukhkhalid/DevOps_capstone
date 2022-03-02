@@ -155,7 +155,6 @@ jobs:
             docker image ls
             # docker run -d -p 5000:5000 capstone-project-$CIRCLE_WORKFLOW_ID
             dockerpath=farrukhkhalid/capstone-project
-            # docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
             docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
             echo "Docker ID and Image: $dockerpath"
             docker tag capstone-project-$CIRCLE_WORKFLOW_ID farrukhkhalid/capstone-project
@@ -210,7 +209,7 @@ jobs:
           name: Delete Blue deployment
           command: |
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/v0.83.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
-            mv /tmp/eksctl /usr/local/bin
+            sudo mv /tmp/eksctl /usr/local/bin
             eksctl delete cluster --name prod-blue
 
 # --------------------------------------------------------------
