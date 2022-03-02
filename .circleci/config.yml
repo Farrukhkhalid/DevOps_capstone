@@ -1,5 +1,10 @@
 version: 2.1
 
+orbs:
+  kubernetes: circleci/kubernetes@0.4.0 
+  aws-eks: circleci/aws-eks@1.1.0
+
+
 commands: 
   linux-install-aws:
     description: installs awscli v2 using pip
@@ -186,8 +191,6 @@ jobs:
     steps:
       - checkout
       - linux-install-aws
-      - setup_remote_docker:
-          version: 19.03.13
       - run:
           name: pull image from repo
           command: |
