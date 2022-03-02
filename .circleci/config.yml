@@ -38,7 +38,7 @@ commands:
             fi
 
 jobs:
-  Lint-Docker:
+  Lint:
     
     docker:
       - image: python:3.7.3-stretch
@@ -79,9 +79,6 @@ jobs:
             . venv/bin/activate
             pylint app.py --errors-only
 
-
-
-
 # --------------------------------------------------------------
 
   Ekscluster-infrastructure:
@@ -91,15 +88,6 @@ jobs:
 
     steps:
       - checkout
-       
-      # - add_ssh_keys:
-      #       fingerprints:
-      #         - "9f:77:5d:2b:3e:87:26:2a:d8:9c:2c:f2:c8:e1:52:fb"
-
-      # - run:
-      #     name: ssh key
-      #     command: |
-      #       ssh-keygen -f id_rsa -t rsa -N ''
       - run:
           name: installing dependencies ( eksctl tool)
           command: |
@@ -107,32 +95,21 @@ jobs:
             mv /tmp/eksctl /usr/local/bin
             # check eksctl version
             eksctl version
-            
 
-      # - run:
-      #     name: installing dependencies kubctl
-      #     command: |
-      #       curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
-      #       mv /etc/kubernetes/kubelet.conf /etc/kubernetes/admin.conf
-      #       mkdir .kube
-      #       mv config .kube/
-      #       chown $(id -u):$(id -g ) $HOME/.kube/config
-      #       kubectl version
-
-     
-            
             
       - run:
           name:
           command: |
             eksctl create cluster \
-            --name production-$CIRCLE_WORKFLOW_ID \
+            --name prod-green-$CIRCLE_WORKFLOW_ID \
             --region us-west-2 \
             --nodegroup-name worker-node-$CIRCLE_WORKFLOW_ID \
             --node-type t3.micro \
             --nodes 2 \
             --nodes-min 1 \
             --nodes-max 2 
+
+# --------------------------------------------------------------
 
   Kubectl:
     docker:
@@ -161,6 +138,7 @@ jobs:
               kubectl get nodes 
   
 
+# --------------------------------------------------------------
 
   Docker-image:
     docker:
@@ -178,11 +156,13 @@ jobs:
             # docker run -d -p 5000:5000 capstone-project-$CIRCLE_WORKFLOW_ID
             dockerpath=farrukhkhalid/capstone-project
             # docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
-            docker login -u "farrukhkhalid" -p "FRkkingot8"
+            docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
             echo "Docker ID and Image: $dockerpath"
             docker tag capstone-project-$CIRCLE_WORKFLOW_ID farrukhkhalid/capstone-project
             # Push image to a docker repository
             docker push farrukhkhalid/capstone-project
+
+# --------------------------------------------------------------
 
   deploy-EKS-cluster:
     machine: 
@@ -194,8 +174,9 @@ jobs:
       - run:
           name: pull image from repo
           command: |
-            docker login -u "farrukhkhalid" -p "FRkkingot8"
+            docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
             docker pull farrukhkhalid/capstone-project
+            echo "<-- IMAGE PULLED! --> "
 
       - run:
           name: aws iam auth
@@ -205,50 +186,38 @@ jobs:
               mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator && export PATH=$PATH:$HOME/bin
 
       - run:
-          name: deoploy cluster
+          name: deoploy cluster Green
           command: |
             curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
             chmod +x ./kubectl
             mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
-            aws eks --region us-west-2 update-kubeconfig --name production-$CIRCLE_WORKFLOW_ID
+            aws eks --region us-west-2 update-kubeconfig --name prod-green-$CIRCLE_WORKFLOW_ID
             kubectl version --client
             export KUBECONFIG=~/.kube/config
 
             kubectl apply -f eks/k8s-deploy.yml
+            echo "<-- CLUSTER DEPLOYED! --> "
             kubectl apply -f eks/k8s-service.yml
+            echo "<-- Loadbalancer service --> "
+            kubectl get svc
+            echo "<-- CLUSTER DEPLOYED! --> "
+            echo "<-- CLUSTER NODES --> "
             kubectl get nodes
+            echo "<-- CLUSTER PODS --> "
             kubectl get pods --all-namespaces
-  
-  # Kube-information:
-  #   docker:
-  #     - image: python:3.7.3-stretch
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
 
-  #     - run:
-  #         name: installing dependencies kubctl
-  #         command: |
-  #           curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
-  #           chmod +x ./kubectl
-  #           mv ./kubectl /usr/local/bin/kubectl
-  #           kubectl version --client
-  #     - run:
-  #         name: kubectl login
-  #         command: |
-  #             export KUBE_CONFIG_PATH=/path/to/.kube/config
-  #             kubectl get svc
+      - run:
+          name: Delete Blue deployment
+          command: |
+            eksctl delete cluster --name prod-blue
 
+# --------------------------------------------------------------
 
 workflows:
   Default:
     jobs:
-      - Lint-Docker
+      - Lint
       - Ekscluster-infrastructure
-      # - Kubectl:
-      #     requires: [Ekscluster-infrastructure]
-      # - Kube-information:
-      #     requires: [Kubectl]
       - Docker-image:
           requires: [Ekscluster-infrastructure]
       - deploy-EKS-cluster:
