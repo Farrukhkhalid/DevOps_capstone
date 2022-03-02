@@ -197,9 +197,9 @@ workflows:
       - Ekscluster-infrastructure
       - Kubectl:
           requires: [Ekscluster-infrastructure]
-      - Kube-information:
-          requires: [Kubectl]
+      # - Kube-information:
+      #     requires: [Kubectl]
       - Docker-image:
-          requires: [Kube-information]
+          requires: [Kubectl]
       - deploy-EKS-cluster:
           requires: [Docker-image]
