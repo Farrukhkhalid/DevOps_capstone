@@ -154,10 +154,21 @@ jobs:
             # Push image to a docker repository
             docker push farrukhkhalid/capstone-project
 
-
-
-
-
+  deploy-EKS-cluster:
+    docker:
+      - image: circleci/python:2.7.14
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: pull image from repo
+          command: |
+            docker login -u "farrukhkhalid" -p "FRkkingot8"
+            docker pull farrukhkhalid/capstone-project
+            kubectl apply -f eks/k8s-deploy.yaml
+            kubectl apply -f eks/k8s-service.yaml
+            get_pods = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
+            echo $app_pod
   # Kube-information:
   #   docker:
   #     - image: python:3.7.3-stretch
@@ -183,10 +194,12 @@ workflows:
   Default:
     jobs:
       - Lint-Docker
-      # - Ekscluster-infrastructure
-      # - Kubectl:
-      #     requires: [Ekscluster-infrastructure]
-      # # - Kube-information:
-      # #     requires: [Kubectl]
+      - Ekscluster-infrastructure
+      - Kubectl:
+          requires: [Ekscluster-infrastructure]
+      - Kube-information:
+          requires: [Kubectl]
       - Docker-image
-            
+          requires: [Kube-information]
+      - deploy-EKS-cluster
+          requires: [Docker-image , Kube-information]
