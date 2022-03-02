@@ -202,4 +202,4 @@ workflows:
       - Docker-image:
           requires: [Kube-information]
       - deploy-EKS-cluster:
-          requires: [Docker-image, Kube-information]
+          requires: [Docker-image]
