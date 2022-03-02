@@ -1,7 +1,36 @@
-
-
 version: 2.1
 
+commands: 
+  linux-install-aws:
+    description: installs awscli v2 using pip
+    steps:
+      - run: 
+          name: install aws cli
+          command: |
+            
+            if (aws --version)
+            then 
+              export AWSV=$(aws --version | cut -d/ -f2 | cut -d. -f1)
+              if  [ $(($AWSV>1)) ]
+              then
+                echo cli already installed
+              else
+                echo uninstalling old aws version now
+                sudo rm -rf /usr/local/aws
+                sudo rm /usr/local/bin/aws  
+                echo installing new version now
+                curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                unzip awscliv2.zip
+                ./aws/install
+                aws --version
+            fi 
+            else  
+              echo installing new version now
+              curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+              unzip awscliv2.zip
+              ./aws/install
+              aws --version
+            fi
 
 jobs:
   Lint-Docker:
@@ -151,10 +180,12 @@ jobs:
             docker push farrukhkhalid/capstone-project
 
   deploy-EKS-cluster:
-    executor: aws-eks/python3
+    machine: 
+          image: ubuntu-2004:202111-01
     working_directory: ~/repo
     steps:
       - checkout
+      - linux-install-aws
       - setup_remote_docker:
           version: 19.03.13
       - run:
