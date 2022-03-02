@@ -217,8 +217,8 @@ jobs:
             kubectl get svc
             kubectl get nodes
 
-            kubectl apply -f eks/k8s-deploy.yaml
-            kubectl apply -f eks/k8s-service.yaml
+            kubectl apply -f eks/k8s-deploy.yml
+            kubectl apply -f eks/k8s-service.yml
             get_pods = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
             echo $app_pod
   
