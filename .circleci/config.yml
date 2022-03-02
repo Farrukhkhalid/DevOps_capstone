@@ -219,8 +219,7 @@ jobs:
 
             kubectl apply -f eks/k8s-deploy.yml
             kubectl apply -f eks/k8s-service.yml
-            get_pods = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
-            echo $get_pods
+            kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
   
   
   # Kube-information:
