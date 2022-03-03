@@ -90,6 +90,7 @@ eksctl create cluster \
 ***Instances***
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/05%20capstone-green%20blue%20instances.png)
 
+
 ### **3. Build/Push Docker Image**
 
 ***Build doceker image***
@@ -113,3 +114,64 @@ docker push farrukhkhalid/capstone-project
 ***Docker hub***
 
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/07-2%20capstone-docker-hub.png)
+
+### 4. Deoployment Green
+
+***pull doceker image***
+
+```yaml
+docker pull farrukhkhalid/capstone-project
+```
+***Aws iam auth***
+
+```yaml
+curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
+chmod +x ./aws-iam-authenticator
+mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator && export PATH=$PATH:$HOME/bin
+```
+
+***Kubectl dependencies / kubeconfig update***
+
+```yaml
+curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+aws eks --region us-west-2 update-kubeconfig --name prod-green-$CIRCLE_WORKFLOW_ID
+kubectl version --client
+export KUBECONFIG=~/.kube/config
+```
+
+***Kubectl deploy***
+
+```yaml
+kubectl apply -f eks/k8s-deploy.yml
+```
+
+***Kubectl ELB service***
+
+```yaml
+kubectl apply -f eks/k8s-service.yml
+```
+
+***Cleanup***
+
+```yaml
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/v0.83.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl delete cluster --name prod-blue
+```
+
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/08%20capstone-deploy-green.png)
+
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/08-2%20capstome-blue.png)
+
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/08-3%20capstone-blue%20deoployemnt.png)
+
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/9%20capstone-green%20cluster.png)
+
+### CI/CD pipeline
+
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/capstone-cicd.png)
+
+### OUPUT
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/10%20capstone-out-green.png)
