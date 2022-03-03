@@ -8,7 +8,7 @@
 - app.py
 - requirments
 
-
+<br/><br/>
 **TECH STACK**
 - Circleci CI/CD pipeline
 - AMAZON WEBSERVICES
@@ -20,12 +20,13 @@
 - DOCKER
 - DOCKER HUB
 
-
-**Issue encountered**
+<br/><br/>
+**ISSUES ENCOUNTERED**
 - Kubectl Permitions
 - IAM use roles
 - IAM auth
 
+<br/><br/>
 ## WORK FLOW
 
 ### **1. Linting**
@@ -61,9 +62,9 @@ pylint app.py --errors-only
 
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/01%20capstone-lint.png)
 
+<br/><br/>
 
-
-### **2. Deploying Cluster**
+### **2. Deploying Cluster Infrastructure**
 
 ***installing EKSCTL dependencies***
 ```yaml
@@ -90,7 +91,7 @@ eksctl create cluster \
 ***Instances***
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/05%20capstone-green%20blue%20instances.png)
 
-
+<br/><br/>
 ### **3. Build/Push Docker Image**
 
 ***Build doceker image***
@@ -115,6 +116,7 @@ docker push farrukhkhalid/capstone-project
 
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/07-2%20capstone-docker-hub.png)
 
+<br/><br/>
 ### 4. Deoployment Green
 
 ***pull doceker image***
@@ -169,9 +171,11 @@ eksctl delete cluster --name prod-blue
 
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/9%20capstone-green%20cluster.png)
 
+<br/><br/>
 ### CI/CD pipeline
 
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/capstone-cicd.png)
 
+<br/><br/>
 ### OUPUT
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/10%20capstone-out-green.png)
