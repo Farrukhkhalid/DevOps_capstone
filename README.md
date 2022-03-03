@@ -32,22 +32,34 @@
 First we start with linting Docker file with Hado lint and source code with pylint
 
 ***creating avirtual env install***
-`python3 -m venv venv` `. venv/bin/activate`
+
+```yaml
+python3 -m venv venv
+. venv/bin/activate
+```
 
 ***Install Makefile***
-`make install`
+
+```yaml
+make install
+```
 
 ***install hado and pylint***
-`wget -O /bin/hadolint   https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64`
+```yaml
+wget -O /bin/hadolint   https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
+```
 
 ***Run Docker Lint***
-`hadolint Dockerfile`
+```yaml
+hadolint Dockerfile
+```
 
 ***Run pylint***
-`pylint app.py --errors-only`
+```yaml
+pylint app.py --errors-only
+```
 
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/01%20capstone-lint.png)
-
 
 
 
@@ -96,4 +108,8 @@ docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
 ```yaml
 docker push farrukhkhalid/capstone-project
 ```
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/07%20capstone-docker-image.png)
 
+***Docker hub***
+
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/07-2%20capstone-docker-hub.png)
