@@ -1,67 +1,47 @@
+# **Udacity DevOps Capstone Project**
+**PROJECT CONTENT**
+- Config.yml: CI/CD pipeline that deploys aws eks
+- k8s-deployment.yml: creates rolling update deployment
+- k8s-service.yml: creates ELB
+- Dockerfile: instructions to assemble Docker image
+- Makefile
+- app.py
+- requirments
 
 
-[![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://app.circleci.com/pipelines/github/Farrukhkhalid/DevOps_project-ml-microservice-kubernetes/2/workflows/bb0452dd-1a01-4155-8f92-24d5c541998d/jobs/2)
+**TECH STACK**
+- Circleci CI/CD pipeline
+- AMAZON WEBSERVICES
+  - AWS CloudFormation
+  - AWS EKS
+  - AWS IAM AUTH
+  - AWS ELB
+- KUBERNETES
+- DOCKER
+- DOCKER HUB
 
-<a href="https://hub.docker.com/r/farrukhkhalid/ml-microservice">
-<img src="https://opennebula.io/wp-content/uploads/2020/05/DockerHub.png" width="150"/>
 
-# operationalize-a-Machine-Learning-Microservice-API
+**Issue encountered**
+- Kubectl Permitions
+- IAM use roles
+- IAM auth
 
-# Udacity Project
+## WORK FLOW
 
-Project Overview
-In this project, you will apply the skills you have acquired in this course to operationalize a Machine Learning Microservice API.
+**1. Linting**
+First we start with linting Docker file with Hado lint and source code with pylint
 
-You are given a pre-trained, sklearn model that has been trained to predict housing prices in Boston according to several features, such as average rooms in a home and data about highway access, teacher-to-pupil ratios, and so on. You can read more about the data, which was initially taken from Kaggle, on the data source site. This project tests your ability to operationalize a Python flask app—in a provided file, app.py—that serves out predictions (inference) about housing prices through API calls. This project could be extended to any pre-trained machine learning model, such as those for image recognition and data labeling.
+***creating avirtual env install***
+`python3 -m venv venv` `. venv/bin/activate`
 
-# Project Tasks
-Your project goal is to operationalize this working, machine learning microservice using kubernetes, which is an open-source system for automating the management of containerized applications. In this project you will:
+***Install Makefile***
+`make install`
 
-Test your project code using linting
-Complete a Dockerfile to containerize this application
-Deploy your containerized application using Docker and make a prediction
-Improve the log statements in the source code for this application
-Configure Kubernetes and create a Kubernetes cluster
-Deploy a container using Kubernetes and make a prediction
-Upload a complete Github repo with CircleCI to indicate that your code has been tested
-You can find a detailed project rubric, here.
+***install hado and pylint***
+`wget -O /bin/hadolint   https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64`
 
-The final implementation of the project will showcase your abilities to operationalize production microservices.
+***Run Docker Lint***
+`hadolint Dockerfile`
 
-Setup the Environment
-Create a virtualenv and activate it
-Run make install to install the necessary dependencies
-Running app.py
-Standalone:
-app.py contains the web app built using flask framework.
-
-# python app.py
-
-# Run in Docker:
-run_docker.sh contains the script to run the app in the docker.
-
-./run_docker.sh
-
-# Run in Kubernetes:
-run_kubernetes.sh contains the script to run app in the Kubernetes.
-
-# ./run_kubernetes.sh
-
-Verify that application is running
-make_prediction.sh contains the script to check the predictions.
-
-# ./make_prediction.sh
-
-Upload to Docker Hub
-upload_docker.sh contains the script to upload the docker image to the Docker Hub.
-
-# ./upload_docker.sh
-
-# Kubernetes Steps
-Setup and Configure Docker locally
-Setup and Configure Kubernetes locally
-Create Flask app in Container
-Run via kubectl
-Kubernetes Clean Up
-kubectl delete deployment.apps/development
-kubectl delete svc development
+***Run pylint***
+`pylint app.py --errors-only`
