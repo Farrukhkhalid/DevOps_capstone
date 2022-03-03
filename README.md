@@ -70,3 +70,5 @@ eksctl create cluster \
             --nodes-min 1 \
             --nodes-max 2
 ```
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/04%20capstone-cloud%20formation.png)
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/04%20capstone-cloud%20formation.png)
