@@ -28,7 +28,7 @@
 
 ## WORK FLOW
 
-**1. Linting**
+### **1. Linting**
 First we start with linting Docker file with Hado lint and source code with pylint
 
 ***creating avirtual env install***
@@ -45,3 +45,28 @@ First we start with linting Docker file with Hado lint and source code with pyli
 
 ***Run pylint***
 `pylint app.py --errors-only`
+
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/01%20capstone-lint.png)
+
+
+
+
+### **2. Deploying Cluster**
+
+***installing EKSCTL dependencies***
+```yaml
+curl --silent --location"https://github.com/weaveworks/eksctl/releases/download/v0.83.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+ mv /tmp/eksctl /usr/local/bin
+```
+
+***Rnning EKSCTL Create cluster stack***
+```yaml
+eksctl create cluster \
+            --name prod-green-$CIRCLE_WORKFLOW_ID \
+            --region us-west-2 \
+            --nodegroup-name worker-node-$CIRCLE_WORKFLOW_ID \
+            --node-type t3.micro \
+            --nodes 2 \
+            --nodes-min 1 \
+            --nodes-max 2
+```
