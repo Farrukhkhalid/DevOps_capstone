@@ -71,4 +71,29 @@ eksctl create cluster \
             --nodes-max 2
 ```
 ![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/04%20capstone-cloud%20formation.png)
-![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/04%20capstone-cloud%20formation.png)
+***Cloud formation stack***
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/02%20capstome-stack-green.png)
+***Worker nodes***
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/06%20capstone-green-worker-node.png)
+***Instances***
+![alt text](https://github.com/Farrukhkhalid/DevOps_capstone/blob/main/screens/05%20capstone-green%20blue%20instances.png)
+
+### **3. Build/Push Docker Image**
+
+***Build doceker image***
+
+```yaml
+docker build -t capstone-project-$CIRCLE_WORKFLOW_ID .
+```
+
+***Longin to docker hub***
+
+```yaml
+docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
+```
+
+***Psuh Docker image***
+```yaml
+docker push farrukhkhalid/capstone-project
+```
+
