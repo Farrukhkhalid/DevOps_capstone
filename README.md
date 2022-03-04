@@ -32,7 +32,7 @@
 ### **1. Linting**
 First we start with linting Docker file with Hado lint and source code with pylint
 
-***creating avirtual env install***
+***creating virtual env install***
 
 ```yaml
 python3 -m venv venv
@@ -106,7 +106,7 @@ docker build -t capstone-project-$CIRCLE_WORKFLOW_ID .
 docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
 ```
 
-***Psuh Docker image***
+***Push Docker image***
 ```yaml
 docker push farrukhkhalid/capstone-project
 ```
